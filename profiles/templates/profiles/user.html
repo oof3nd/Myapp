@@ -11,6 +11,9 @@
             <h5>{{ art.title }}</h5><br>
             {% for menu_item in user.item_set.all %}
                 <div class="media-body">{{ menu_item.name }}</div>
+                {% for ing in menu_item.get_contents %}
+                <span> {{ ing }} </span>
+                {% endfor %}
             {% endfor %}
              </div>
         </li>
