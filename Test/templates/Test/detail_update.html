@@ -1,0 +1,14 @@
+{% extends "Test/base.html" %}
+{% load bootstrap3 %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% block head_title %}
+    {% trans 'News' %}
+{% endblock head_title %}
+{% block content %}
+    <h1>{{ form.instance.title }} <small> {{ form.instance.important }}</small> </h1>
+    <p>{{ form.instance.text }}</p>
+    <hr/>
+    <h3>{% trans 'Make Changes' %}</h3>
+   {% include 'snippets/form_snippet.html' with form=form %}
+{% endblock  %}

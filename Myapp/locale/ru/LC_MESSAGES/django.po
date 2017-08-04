@@ -1,0 +1,132 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-08-03 22:44+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: .\Test\forms.py:8 .\Test\validators.py:20
+msgid "New"
+msgstr "Новая"
+
+#: .\Test\forms.py:9 .\Test\validators.py:20
+msgid "Fast"
+msgstr "Срочная"
+
+#: .\Test\forms.py:28
+msgid "Title"
+msgstr "Заголовок"
+
+#: .\Test\forms.py:29
+msgid "Important"
+msgstr "Важный"
+
+#: .\Test\forms.py:30
+msgid "Text"
+msgstr "Текст"
+
+#: .\Test\forms.py:31
+msgid "slug"
+msgstr "Ссылка"
+
+#: .\Test\templates\Test\detail_update.html:6
+msgid "News"
+msgstr "Новости"
+
+#: .\Test\templates\Test\detail_update.html:12
+msgid "Make Changes"
+msgstr "Изменить"
+
+#: .\Test\templates\snippets\form_snippet.html:10
+#: .\menus\templates\menus\form.html:23 .\templates\form.html:23
+msgid "Save"
+msgstr "Сохранить"
+
+#: .\Test\views.py:45
+msgid "Add news"
+msgstr "Добавить новость"
+
+#: .\Test\views.py:57
+msgid "Update new"
+msgstr "Обновить новость"
+
+#: .\menus\forms.py:18
+msgid "Article"
+msgstr "Артикль"
+
+#: .\menus\forms.py:19
+msgid "Name"
+msgstr "Название"
+
+#: .\menus\forms.py:20 .\menus\templates\menus\detail-update.html:12
+#: .\menus\templates\menus\item_detail.html:12
+#: .\menus\templates\menus\item_list.html:13
+msgid "Contents"
+msgstr "Содержимое"
+
+#: .\menus\forms.py:21 .\menus\templates\menus\detail-update.html:20
+#: .\menus\templates\menus\item_detail.html:20
+#: .\menus\templates\menus\item_list.html:21
+msgid "Excludes"
+msgstr "Избегать"
+
+#: .\menus\forms.py:22
+msgid "Public"
+msgstr "Публично"
+
+#: .\menus\models.py:16 .\menus\models.py:17
+msgid "Separate by comma"
+msgstr "Через запятую"
+
+#: .\menus\templates\menus\detail-update.html:3
+msgid "Menu Items"
+msgstr "Меню новостей"
+
+#: .\menus\templates\menus\detail-update.html:31
+msgid "Make Сhanges"
+msgstr "Изменить"
+
+#: .\menus\views.py:36
+msgid "Create Item"
+msgstr "Создать новость"
+
+#: .\menus\views.py:47
+msgid "Update Item"
+msgstr "Обновить новость"
+
+#~ msgid "name"
+#~ msgstr "Имя"
+
+#, fuzzy
+#~| msgid "Contents"
+#~ msgid "contents"
+#~ msgstr "Содержимое"
+
+#, fuzzy
+#~| msgid "Excludes"
+#~ msgid "excludes"
+#~ msgstr "Избегать"
+
+#~ msgid "Log in"
+#~ msgstr "Логин"
+
+#~ msgid "Write"
+#~ msgstr "Введите"
+
+#~ msgid "Password"
+#~ msgstr "Пароль"

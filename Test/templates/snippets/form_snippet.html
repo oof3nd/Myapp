@@ -1,0 +1,11 @@
+{% load bootstrap3 %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% if form.errors.non_field_errors %}
+    {{ form.errors.non_field_errors }}
+    {% endif %}
+    <form class="form-horizontal" method="POST"> {% csrf_token %}
+          {% bootstrap_form form %}
+        <br>
+    <button class="btn btn-success" type="submit">{% trans 'Save' %}</button>
+    </form>

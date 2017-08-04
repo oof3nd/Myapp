@@ -1,0 +1,9 @@
+{% extends "Test/base.html" %}
+
+{% block head_title %}
+    Новости
+{% endblock head_title %}
+{% block content %}
+    <h1>{{ object.title }}</h1>
+    <p>{{ object.text }}</p>
+{% endblock  %}

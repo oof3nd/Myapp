@@ -1,0 +1,47 @@
+{% extends "Test/base.html" %}
+{# Load the tag library #}
+{% load bootstrap3 %}
+{% load widget_tweaks %}
+{% load i18n %}
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% block head_title %}
+    {{ title }}
+{% endblock head_title %}
+{% block content %}
+    <h1> {{ title }}</h1>
+
+   {% include 'snippets/form_snippet.html' %}
+{#         {% for hidden in form.hidden_fields %}#}
+{#      {{ hidden }}#}
+{#    {% endfor %}#}
+{##}
+{#    {% for field in form.visible_fields %}#}
+{#      <div class="form-group">#}
+{#        <label for="{{ field.id_for_label }}">{{ field.label }}</label>#}
+{#        {% render_field field class="form-control" %}#}
+{#        {% for error in field.errors %}#}
+{#          <span class="help-block">{{ error }}</span>#}
+{#        {% endfor %}#}
+{#      </div>#}
+{#    {% endfor %}#}
+{% endblock  %}
+
+{% comment %}    <div class="input-group">
+      <span class="input-group-addon" id="basic-addon1">Заголовок новости</span>
+      <input type="text" class="form-control" name="title" placeholder="Яндекс.Погода" aria-describedby="basic-addon1">
+    </div>
+        <br>
+    <div class="input-group">
+      <span class="input-group-addon" id="basic-addon1">Категория</span>
+      <input type="text" class="form-control"  name="important" placeholder="Новая" aria-describedby="basic-addon1">
+    </div>
+        <br>
+    <div class="input-group">
+      <span class="input-group-addon" id="basic-addon1">Текст</span>
+        <textarea class="form-control" name="text" rows="5" placeholder="Хорошая погода...." ></textarea>
+    </div>{% endcomment %}

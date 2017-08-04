@@ -1,0 +1,22 @@
+{% extends "Test/base.html" %}
+{% block head_title %}Новости{% endblock head_title %}
+{% block content %}
+    <a href="{% url "article:create" %}" class="btn btn-primary btn-sm float-right" role="button">Добавить новость</a><br>
+    <h1>Список новостей </h1>
+<ul class="media-list list-group">
+        {% for obj in object_list %}
+	<li class="media list-group-item">
+       <div class="media-body">
+        <a href='{{ obj.get_absolute_url }}'>{{ obj.title }}</a>
+		<br>
+                {{ obj.text }}
+			<br>Опубликовано:   {{ obj.timestamp }}
+            <br>Обновленно:   {{ obj.update }}
+              </div>
+				</li>
+            {% empty %}
+            <li><a href="{% url "article:create" %}">Добавить новость</a></li>
+        {% endfor %}
+			</ul>
+{% endblock  %}
+

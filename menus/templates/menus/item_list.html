@@ -1,0 +1,36 @@
+{% extends "Test/base.html" %}
+{% load i18n %}
+{% block head_title %}Меню новостей{% endblock head_title %}
+{% block content %}
+<a href="{% url "menus:create" %}" class="btn btn-primary btn-sm float-right" role="button">Добавить новость в меню</a><br>
+<h1>Меню новостей</h1>
+<ul class="media-list list-group">
+        {% for obj in object_list %}
+	<li class="media list-group-item">
+       <div class="media-body">
+        <a href='{{ obj.get_absolute_url }}'>{{ obj.name }}</a>
+		<br>
+       {% if  obj.contents %}
+            {% trans 'Contents' %}
+           <ul class="media-list list-group">
+               {% for item in obj.get_contents %}
+                   <li class="media list-group-item">{{ item }}</li>
+               {% endfor %}
+           </ul>
+       {% endif %}
+       {% if  obj.excludes %}
+              {% trans 'Excludes' %}
+           <ul class="media-list list-group">
+               {% for item in obj.get_excludes %}
+                   <li class="media list-group-item">{{ item }}</li>
+               {% endfor %}
+           </ul>
+       {% endif %}
+              </div>
+				</li>
+        {% empty %}
+        <li><a href="{% url "menus:create" %}">Добавить новость в меню</a></li>
+        {% endfor %}
+			</ul>
+{% endblock  %}
+

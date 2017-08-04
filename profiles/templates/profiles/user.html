@@ -1,0 +1,20 @@
+{% extends "Test/base.html" %}
+{% load i18n %}
+{% block head_title %}{{ user.username }}{% endblock head_title %}
+{% block content %}
+<h1>{{ user.username }}</h1>
+    <hr/>
+    <ul class="list-unstyled">
+    {% for art in user.article_set.all  %}
+        <li class="media list-group-item">
+             <div class="media-body">
+            <h5>{{ art.title }}</h5><br>
+            {% for menu_item in user.item_set.all %}
+                <div class="media-body">{{ menu_item.name }}</div>
+            {% endfor %}
+             </div>
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock  %}
+

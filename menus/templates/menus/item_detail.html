@@ -1,0 +1,31 @@
+{% extends "Test/base.html" %}
+{% load i18n %}
+{% block head_title %}Меню новостей{% endblock head_title %}
+{% block content %}
+<h1>{{ object.name }}</h1>
+<p class="lead">{{ object.article.title }}</p>
+<ul class="media-list list-group">
+	<li class="media list-group-item">
+       <div class="media-body">
+		<br>
+       {% if  object.contents %}
+            {% trans 'Contents' %}
+           <ul class="media-list list-group">
+               {% for item in object.get_contents %}
+                   <li class="media list-group-item">{{ item }}</li>
+               {% endfor %}
+           </ul>
+       {% endif %}
+       {% if  object.excludes %}
+              {% trans 'Excludes' %}
+           <ul class="media-list list-group">
+               {% for item in object.get_excludes %}
+                   <li class="media list-group-item">{{ item }}</li>
+               {% endfor %}
+           </ul>
+       {% endif %}
+              </div>
+				</li>
+			</ul>
+{% endblock  %}
+

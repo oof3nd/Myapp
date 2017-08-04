@@ -1,0 +1,39 @@
+{% extends "Test/base.html" %}
+{# Load the tag library #}
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% block content %}
+    <div class="row justify-content-center">
+    <div class="col-4">
+{% if form.errors %}
+<p class="alert alert-danger" role="alert">Ваше имя пользователя и пароль не совпадают. Пожалуйста, попробуйте еще раз.</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p  class="alert alert-warning" role="alert">У вашей учетной записи нет доступа к этой странице. Продолжать,
+     Пожалуйста, войдите в систему с учетной записью, имеющей доступ.</p>
+    {% else %}
+    <p class="alert alert-warning" role="alert" >Пожалуйста, войдите, чтобы увидеть эту страницу.</p>
+    {% endif %}
+{% endif %}
+
+<form method="post"  action="{% url 'login' %}">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+<input class="btn btn-success" type="submit" value="Войти" />
+<input type="hidden" name="next" value="{{ next }}" />
+</form>
+    </div>
+    </div>
+{# Assumes you setup the password_reset view in your URLconf #}
+{#<p><a href="{% url 'password_reset' %}">Забыли пароль?</a></p>#}
+
+{% endblock %}
