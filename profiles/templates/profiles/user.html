@@ -3,21 +3,29 @@
 {% block head_title %}{{ user.username }}{% endblock head_title %}
 {% block content %}
 <h1>{{ user.username }}</h1>
+    <form class="form-inline my-2 my-lg-0" method="GET" action=".">
+    <input class="form-control mr-sm-2" type="text" placeholder="Поиск" name="q" value="{{ request.GET.q }}">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
+    </form>
     <hr/>
+{% if title %}
     <ul class="list-unstyled">
-    {% for art in user.article_set.all  %}
+    {% for art in title  %}
         <li class="media list-group-item">
              <div class="media-body">
             <h5>{{ art.title }}</h5><br>
             {% for menu_item in user.item_set.all %}
                 <div class="media-body">{{ menu_item.name }}</div>
                 {% for ing in menu_item.get_contents %}
-                <span> {{ ing }} </span>
+                <span class="badge badge-default"> {{ ing }} </span>
                 {% endfor %}
             {% endfor %}
              </div>
         </li>
     {% endfor %}
+{% else %}
+    <p class="lead">Нет новостей</p>
+{% endif %}
     </ul>
 {% endblock  %}
 
