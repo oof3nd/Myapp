@@ -15,7 +15,8 @@
               </div>
 				</li>
             {% empty %}
-            <li><a href="{% url "article:create" %}">Добавить новость</a></li>
+{#            <li><a href="{% url "article:create" %}">Добавить новость</a></li>#}
+            <p>Нет новостей</p>
         {% endfor %}
 			</ul>
 {% endblock  %}
