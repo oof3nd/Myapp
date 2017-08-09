@@ -69,7 +69,7 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(ArticleUpdateView,self).get_context_data(**kwargs)
         name = self.get_object().title
-        context['title'] = _('Update new')+f' {name}'
+        context['title'] = _('Update new')+f" {name}"
         return context
 
     def get_queryset(self):

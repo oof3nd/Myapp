@@ -13,16 +13,12 @@
     {% for art in title  %}
         <li class="media list-group-item">
              <div class="media-body">
-            <h5>{{ art.title }}</h5><br>
-            {% for menu_item in user.item_set.all %}
-                <div class="media-body">{{ menu_item.name }}</div>
-                {% for ing in menu_item.get_contents %}
-                <span class="badge badge-default"> {{ ing }} </span>
-                {% endfor %}
+            <h4>{{ art.title }}</h4><br>
+                <div class="media-body">{{ art.text }}</div>
+                <span class="badge badge-default"> {{ art.important }} </span>
             {% endfor %}
              </div>
         </li>
-    {% endfor %}
 {% else %}
     <p class="lead">Нет новостей</p>
 {% endif %}

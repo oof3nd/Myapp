@@ -3,11 +3,30 @@ from __future__ import unicode_literals
 import django.utils.timezone
 from django.utils.timezone import now,pytz
 from django.db import models
+from django.db.models import Q
 from django.db.models.signals import pre_save,post_save
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from .untils import unique_slug_generator
 from .validators import validate_important
+
+class ArticleQuerySet(models.query.QuerySet):
+    def search (self, query): # Article.objects.all().search()
+        if query:
+            return self.filter(
+            Q(title__icontains=query)|
+            Q(important__icontains=query)|
+            Q(text__icontains=query)
+        ).distinct()
+        return self
+
+class ArticleManager(models.Manager):
+
+    def get_queryset(self):
+        return ArticleQuerySet(self.model, using=self._db)
+
+    def search(self, query): # Article.objects.search()
+        return self.get_queryset().search(query)
 
 class Article(models.Model):
     title           = models.CharField('Заголовок',max_length=200)
@@ -18,6 +37,8 @@ class Article(models.Model):
     #my_date_field  = models.DateField(auto_now=False,auto_now_add=False)
     slug            = models.SlugField(unique=True,null=True,blank=True)
     owner           = models.ForeignKey(User)
+
+    objects = ArticleManager() # add Model.objects.all()
 
     def __str__(self):
         return self.title
