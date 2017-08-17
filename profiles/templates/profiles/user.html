@@ -13,10 +13,14 @@
     {% for art in title  %}
         <li class="media list-group-item">
              <div class="media-body">
-            <h4>{{ art.title }}</h4><br>
-                <div class="media-body">{{ art.text }}</div>
-                <span class="badge badge-default"> {{ art.important }} </span>
+            <h3>{{ art.title }}</h3><br>
+                <div class="jumbotron"><a href="{{ request.path }}?q={{ art.text }}">{{ art.text }}</a><hr/>
+                <a href="{{ request.path }}?q={{ art.important }}" class="badge badge-dark">{{ art.important }} </a></div><br>
+            <h5>Связанные элементы из списка меню:</h5>
+            {% for item in art.item_set.all %}
+                  <b  class="badge badge-info">{{ item.name }}</b><br>
             {% endfor %}
+    {% endfor %}
              </div>
         </li>
 {% else %}
