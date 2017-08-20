@@ -14,11 +14,19 @@
         <li class="media list-group-item">
              <div class="media-body">
             <h3>{{ art.title }}</h3><br>
-                <div class="jumbotron"><a href="{{ request.path }}?q={{ art.text }}">{{ art.text }}</a><hr/>
+                <div class="jumbotron">
+                    <p class="font-weight-normal">{{ art.text }}</p>
+                    <hr/>
                 <a href="{{ request.path }}?q={{ art.important }}" class="badge badge-dark">{{ art.important }} </a></div><br>
             <h5>Связанные элементы из списка меню:</h5>
             {% for item in art.item_set.all %}
-                  <b  class="badge badge-info">{{ item.name }}</b><br>
+                <br>
+                <ul class="list-group">
+                  <li   href="{{ request.path }}?q={{ item.name }}" class="list-group-item active">{{ item.name }}</li>
+                {% for ing in item.get_contents %}
+                     <li  href="{{ request.path }}?q={{ing}}" class="list-group-item">{{ ing }} </li>
+                {% endfor %}
+                </ul>
             {% endfor %}
     {% endfor %}
              </div>

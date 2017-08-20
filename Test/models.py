@@ -13,6 +13,7 @@ from .validators import validate_important
 class ArticleQuerySet(models.query.QuerySet):
     def search (self, query): # Article.objects.all().search()
         if query:
+            query = query.strip()
             return self.filter(
             Q(title__icontains=query)|
             Q(important__icontains=query)|

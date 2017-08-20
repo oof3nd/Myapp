@@ -1,14 +1,20 @@
 # -*- coding: UTF-8 -*-
 from django.contrib.auth import get_user_model
 from django.http import Http404
-from django.shortcuts import render, get_object_or_404
-from django.views.generic import DeleteView
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import DeleteView,View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from Test.models import Article
 from menus.models import Item
 
 User = get_user_model()
+
+class ProfileFollowToggle(View):
+    def post(self,request,*args,**kwargs):
+        print(request.data)
+        return redirect("/")
+
 
 class ProfileDetailView(LoginRequiredMixin, DeleteView):
     template_name = 'profiles/user.html'
