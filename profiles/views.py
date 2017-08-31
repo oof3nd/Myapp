@@ -6,13 +6,18 @@ from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import  CreateView,DeleteView,View
 
-
+from .forms import RegisterForm
 from Test.models import Article
 from menus.models import Item
 from .models import Profile
 
 User = get_user_model()
 
+
+class RegisterView(CreateView):
+    form_class = RegisterForm
+    template_name = 'registration/register.html'
+    success_url = '/'
 
 class ProfileFollowToggle(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
