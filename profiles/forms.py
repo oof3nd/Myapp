@@ -11,9 +11,24 @@ class RegisterForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = {'username','email',}
+        fields = {'email','username',}
+
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+        qsu = User.objects.filter(username__iexact=username)
+        if qsu.exists():
+            raise forms.ValidationError("Такой логин уже существует")
+        return username
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        qs = User.objects.filter(email__iexact=email)
+        if qs.exists():
+            raise forms.ValidationError("Данный почтовый адрес используется другим пользователем")
+        return email
 
     def clean_password2(self):
+        #Traslite
         #check that the two passord entries match
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
@@ -29,4 +44,5 @@ class RegisterForm(forms.ModelForm):
         # create a new user hash for activating email
         if commit:
             user.save()
+            user.profile.send_activation_email()
         return user
