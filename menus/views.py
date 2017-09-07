@@ -16,6 +16,12 @@ class HomeView(View):
         qs = Item.objects.filter(user_id__in=is_following_user_ids, public=True).order_by("-updated")
         return render(request, "menus/home-feed.html", {'object_list': qs})
 
+
+class AllUserRecentItemListView(ListView):
+    template_name = 'Test/home.html'
+    def get_queryset(self):
+        return Item.objects.filter(user__is_active=True)
+
 class ItemListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Item.objects.filter(user=self.request.user)

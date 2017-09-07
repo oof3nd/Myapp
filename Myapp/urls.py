@@ -6,7 +6,7 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 from django.contrib.auth.views import  LoginView, LogoutView
 
-from menus.views import HomeView
+from menus.views import HomeView,AllUserRecentItemListView
 from profiles.views import  ProfileFollowToggle, RegisterView, activate_user_view
 
 
@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^u/', include('profiles.urls', namespace='profiles')),
     url(r'^profile-follow/$', ProfileFollowToggle.as_view(), name='follow'),
     url(r'^$',  HomeView.as_view(), name='home'),
+    url(r'^recent/$', AllUserRecentItemListView.as_view(), name='recent'),
     url(r'^about/$', TemplateView.as_view(template_name='Test/about.html'), name='about'),
     url(r'^contacts/$', TemplateView.as_view(template_name='Test/contacts.html'), name='contacts'),
     url(r'^article/',include('Test.urls', namespace='article')),
