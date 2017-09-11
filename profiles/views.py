@@ -64,8 +64,9 @@ class ProfileDetailView(LoginRequiredMixin ,DeleteView):
         context = super(ProfileDetailView, self).get_context_data(**kwargs)
         user =  context['user'] # self.request.user
         is_following = False
-        if user.profile in self.request.user.is_following.all():
-            is_following = True
+        if self.request.user.is_authenticated():
+            if user.profile in self.request.user.is_following.all():
+                is_following = True
         context['is_following'] = is_following
         query = self.request.GET.get("q")
         items_exists = Item.objects.filter(user=user).exists()
