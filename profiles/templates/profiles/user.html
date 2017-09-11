@@ -2,19 +2,43 @@
 {% load i18n %}
 {% block head_title %}{{ user.username }}{% endblock head_title %}
 {% block content %}
-<h1>{{ user.username }}</h1>
+<h1>{{ user.username }} </h1>
+    {% if request.user.is_authenticated %}
+    <p>{% include 'profiles/snippet/follow_form.html' with username=user.username is_following=is_following %}</p>
+    {% else %}
+    <p><i>Войдите для фоллоу</i></p>
+    {% endif %}
+    <form class="form-inline my-2 my-lg-0" method="GET" action=".">
+    <input class="form-control mr-sm-2" type="text" placeholder="Поиск" name="q" value="{{ request.GET.q }}">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
+    </form>
     <hr/>
+{% if title %}
     <ul class="list-unstyled">
-    {% for art in user.article_set.all  %}
+    {% for art in title  %}
         <li class="media list-group-item">
              <div class="media-body">
-            <h5>{{ art.title }}</h5><br>
-            {% for menu_item in user.item_set.all %}
-                <div class="media-body">{{ menu_item.name }}</div>
+            <h3>{{ art.title }}</h3><br>
+                <div class="jumbotron">
+                    <p class="font-weight-normal">{{ art.text }}</p>
+                    <hr/>
+                <a href="{{ request.path }}?q={{ art.important }}" class="badge badge-dark">{{ art.important }} </a></div><br>
+            <h5>Связанные элементы из списка меню:</h5>
+            {% for item in art.item_set.all %}
+                <br>
+                <ul class="list-group">
+                  <li   href="{{ request.path }}?q={{ item.name }}" class="list-group-item active">{{ item.name }}</li>
+                {% for ing in item.get_contents %}
+                     <li  href="{{ request.path }}?q={{ing}}" class="list-group-item">{{ ing }} </li>
+                {% endfor %}
+                </ul>
             {% endfor %}
+    {% endfor %}
              </div>
         </li>
-    {% endfor %}
+{% else %}
+    <p class="lead">Нет новостей</p>
+{% endif %}
     </ul>
 {% endblock  %}
 

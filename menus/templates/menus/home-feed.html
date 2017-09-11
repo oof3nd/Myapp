@@ -1,0 +1,20 @@
+{% extends "Test/base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <h1 class="card-title">По подписке</h1>
+    <ul class="list-unstyled">
+    {% for obj in object_list  %}
+        <li class="media list-group-item">
+             <div class="media-body">
+                <h4 ><a  class="card-link" href="{% url "profiles:detail" username=obj.user.username %}">{{ obj.name }}</a></h4><br>
+                <div class="jumbotron">
+                    <p class="font-weight-normal">{{ obj.article.text }}</p>
+                    <hr/>
+                <a href="{% url "profiles:detail" username=obj.user.username %}?q={{ obj.article.important }}" class="badge badge-dark">{{ obj.article.important }} </a></div>
+            <p class="badge badge-secondary">Автор: {{ obj.user.username }}</p>
+    {% endfor %}
+             </div>
+        </li>
+    </ul>
+{% endblock content %}

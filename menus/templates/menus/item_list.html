@@ -29,7 +29,8 @@
               </div>
 				</li>
         {% empty %}
-        <li><a href="{% url "menus:create" %}">Добавить новость в меню</a></li>
+{#        <li><a href="{% url "menus:create" %}">Добавить новость в меню</a></li>#}
+       <p>Нет новостей</p>
         {% endfor %}
 			</ul>
 {% endblock  %}

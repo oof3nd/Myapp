@@ -7,7 +7,7 @@
         {% for obj in object_list %}
 	<li class="media list-group-item">
        <div class="media-body">
-        <a href='{{ obj.get_absolute_url }}'>{{ obj.title }}</a>
+        <a href='{{ obj.get_absolute_url }}'>{{ obj }}</a>
 		<br>
                 {{ obj.text }}
 			<br>Опубликовано:   {{ obj.timestamp }}
@@ -15,7 +15,8 @@
               </div>
 				</li>
             {% empty %}
-            <li><a href="{% url "article:create" %}">Добавить новость</a></li>
+{#            <li><a href="{% url "article:create" %}">Добавить новость</a></li>#}
+            <p>Нет новостей</p>
         {% endfor %}
 			</ul>
 {% endblock  %}

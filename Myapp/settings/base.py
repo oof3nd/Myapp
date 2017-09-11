@@ -31,6 +31,17 @@ DEBUG = False
 
 ALLOWED_HOSTS = []
 
+EMAIL_HOST = '..'
+EMAIL_HOST_USER = '...'
+EMAIL_HOST_PASSWORD = '...'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = '...'
+
+ADMINS = (
+    ('...', '...')
+)
+MANAGERS = ADMINS
 
 # Application definition
 
@@ -74,6 +85,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
                 'django.template.context_processors.i18n',
             ],
         },
@@ -136,6 +148,9 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+LOGOUT_REDIRECT_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
 
 
 # Static files (CSS, JavaScript, Images)

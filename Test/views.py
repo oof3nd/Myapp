@@ -15,9 +15,24 @@ from django.contrib.auth.models import User
 
 #Important
 class ArticleListView(LoginRequiredMixin, ListView):
+
+    model = Article
+    # def get_queryset(self):
+    #
+    #     return Article.objects.filter(owner=self.request.user)
+    #     return Article.objects.all()
+
     def get_queryset(self):
-        return Article.objects.filter(owner=self.request.user)
-        # return Article.objects.all()
+    # Fetch the queryset from the parent's get_queryset
+        queryset = super(ArticleListView, self).get_queryset()
+    # Get the q GET parameter
+        q = self.request.GET.get('q')
+        if q:
+    # return a filtered queryset
+            return queryset.filter(title__icontains=q)
+    # No q is specified so we return queryset
+        return  Article.objects.filter(owner=self.request.user)
+
 
 # замена pk на id для ссылки
 class ArticleDetailView(LoginRequiredMixin, DetailView):
@@ -54,7 +69,7 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(ArticleUpdateView,self).get_context_data(**kwargs)
         name = self.get_object().title
-        context['title'] = _('Update new')+f' {name}'
+        context['title'] = _('Update new')+f" {name}"
         return context
 
     def get_queryset(self):
