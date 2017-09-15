@@ -13,14 +13,14 @@
     <div class="row justify-content-center">
     <div class="col-4">
 <h1>Регистрация</h1>
-<form method="post"  action="{% url 'registration' %}">
+<form action="{% url 'registration' %}" method="post"  data-validate-username-url="{% url 'check_email' %}" >
         {% csrf_token %}
         {% bootstrap_form form %}
-<input class="btn btn-success" type="submit" value="Зарегистрироваться" />
-<input type="hidden" name="next" value="{{ next }}" />
+        <input class="btn btn-success" type="submit" value="Зарегистрироваться" />
+        <input type="hidden" name="next" value="{{ next }}" />
 </form>
         <br>
-    <p>У вас есть <a  class="card-link"  href="{% url "login" %}">логин</a>?</p>
+    <p>У вас есть <a  class="card-link"  href="{% url "login" %}">Логин</a>?</p>
     </div>
     </div>
 {# Assumes you setup the password_reset view in your URLconf #}
