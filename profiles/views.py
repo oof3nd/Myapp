@@ -2,17 +2,26 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.http import Http404
+from django.http import Http404,HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import  CreateView,DeleteView,View
+from django.contrib.auth.models import User
 
 from .forms import RegisterForm
 from Test.models import Article
 from menus.models import Item
 from .models import Profile
 
-User = get_user_model()
+user = get_user_model()
 
+def check_email( request):
+    username = request.GET.get('username', None)
+    data = {
+        'is_taken': User.objects.filter(username__iexact=username).exists()
+    }
+    if data['is_taken']:
+        data['error_message'] = 'Логин занят'
+    return JsonResponse(data)
 
 def activate_user_view(request, code=None, *args, **kwargs):
     if code:

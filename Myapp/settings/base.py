@@ -159,3 +159,14 @@ LOGIN_REDIRECT_URL = '/'
 STATIC_URL = '/static/'
 LOGIN_URL = '/login/'
 MEDIA_URL = '/media/'
+
+REGISTRATION_OPEN = True
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = True
+
+# Keep our policy as strict as possible
+CSP_DEFAULT_SRC = ("'none'",)
+CSP_STYLE_SRC = ("'self'", 'cdnjs.cloudflare.com')
+CSP_SCRIPT_SRC = ("'self'",'cdnjs.cloudflare.com')
+#CSP_FONT_SRC = ("'self'", 'fonts.gstatic.com')
+CSP_IMG_SRC = ("'self'",)
