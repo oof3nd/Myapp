@@ -1,0 +1,12 @@
+{% extends "Test/base.html" %}
+{% load i18n %}
+{% block head_title %}Тесты{% endblock head_title %}
+{% block content %}
+<h1>Список тестов</h1>
+<ul class="media-list list-group">
+        {% for obj in object_list %}
+	    <li class="media list-group-item">
+       <a class="btn btn-dark" href='{{ obj.id }}' role="button" >{{ obj.name }}</a>
+        {% endfor %}
+			</ul>
+{% endblock  %}

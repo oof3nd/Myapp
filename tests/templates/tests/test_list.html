@@ -1,0 +1,21 @@
+{% extends "Test/base.html" %}
+{% load i18n %}
+{% block head_title %}Мои тесты{% endblock head_title %}
+{% block content %}
+<a href="{% url "tests:create" %}" class="btn btn-primary btn-sm float-right" role="button">Добавить тест</a><br>
+<h1>Список моих тестов</h1>
+<ul class="media-list list-group">
+        {% for obj in object_list %}
+	<li class="media list-group-item">
+       <a class="btn btn-dark" href='{{ obj.id }}' role="button" >{{ obj.name }}</a>
+        {% if  user.is_authenticated  %}
+        <a class="btn btn-dark btn-sm float-right" href="{{ obj.get_absolute_url }}" role="button" >Изменить</a>
+        {% endif %}
+		<br>
+				</li>
+        {% empty %}
+{#        <li><a href="{% url "tests:create" %}">Добавить тест</a></li>#}
+       <p>Нет тестов</p>
+        {% endfor %}
+			</ul>
+{% endblock  %}

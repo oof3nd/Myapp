@@ -1,0 +1,12 @@
+{% extends "Test/base.html" %}
+{% load i18n %}
+{% block head_title %}Тесты{% endblock head_title %}
+{% block content %}
+<h1>{{ object.name }}</h1>
+<ul class="media-list list-group">
+            <li class="media list-group-item">{{ object.category }}</li>
+            <li class="media list-group-item">{{ object.description }}</li>
+           <li class="media list-group-item">{{ object.created_date }}</li>
+			</ul>
+{% endblock  %}
+

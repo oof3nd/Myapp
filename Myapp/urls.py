@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^recent/$', AllUserRecentItemListView.as_view(), name='recent'),
     url(r'^about/$', TemplateView.as_view(template_name='Test/about.html'), name='about'),
     url(r'^contacts/$', TemplateView.as_view(template_name='Test/contacts.html'), name='contacts'),
-    url(r'^article/',include('Test.urls', namespace='article')),
+    url(r'^article/', include('Test.urls', namespace='article')),
     url(r'^items/', include('menus.urls', namespace='menus')),
+    url(r'^tests/', include('tests.urls', namespace='tests')),
 ]

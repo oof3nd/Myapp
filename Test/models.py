@@ -48,6 +48,10 @@ class Article(models.Model):
         # return f"/article/{self.slug}"
         return  reverse('article:detail', kwargs={'slug': self.slug})
 
+    class Meta:
+        ordering = ['title']
+        verbose_name = 'Статья'
+        verbose_name_plural = 'Статьи'
 
 
 def rl_pre_save_reciiver(sender,instance,*args,**kwargs):
