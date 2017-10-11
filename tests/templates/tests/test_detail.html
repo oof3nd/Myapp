@@ -1,12 +1,27 @@
 {% extends "Test/base.html" %}
 {% load i18n %}
-{% block head_title %}Тесты{% endblock head_title %}
+{% block head_title %}Мои тесты{% endblock head_title %}
 {% block content %}
+    <div class="float-right">
+    <a href="{% url "tests:mylist" %}" class="btn btn-primary btn-sm " role="button">Добавить вопрос</a>
+    </div>
 <h1>{{ object.name }}</h1>
 <ul class="media-list list-group">
             <li class="media list-group-item">{{ object.category }}</li>
             <li class="media list-group-item">{{ object.description }}</li>
            <li class="media list-group-item">{{ object.created_date }}</li>
 			</ul>
+    <hr>
+    <h1>Вопросы</h1>
+    <ul class="media-list list-group">
+        {% for objc in ClosedQuestion_object_list %}
+           <li class="media list-group-item">Вопрос № {{ objc.question_of_test_id}}</li>
+            <li class="media list-group-item">{{ objc.question_content }}</li>
+            {% for objc in ClosedQuestionOption_object_list %}
+                     <li class="media list-group-item">{{ objc.content }}</li>
+           {% endfor %}
+            <br>
+       {% endfor %}
+    </ul>
 {% endblock  %}
 

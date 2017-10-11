@@ -38,12 +38,10 @@
                 <input class="form-control mr-sm-2" type="text" placeholder="Поиск" aria-label="Search"  name="q">
                 <button class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit">Поиск</button>
             </form>
-
           {% if not request.user.is_authenticated %}
               <a class="btn btn-outline-primary my-2 my-sm-0 mr-sm-2" href="{% url "login" %}" role="button">Войти</a>
               <a class="btn btn-outline-primary my-2 my-sm-0 mr-sm-2" href="{% url "registration" %}" role="button">Регистрация</a>
           {% else %}
-               <a class="btn btn-outline-primary  my-2 my-sm-0 mr-sm-2" href="{% url "tests:mylist" %}" role="button">Мои Тесты</a>
                <a class="btn btn-outline-primary  my-2 my-sm-0 mr-sm-2" href="{% url "logout" %}" role="button">Выход</a>
           {% endif %}
       </div>

@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from .models import Test, Category
+from .models import Test, Category,ClosedQuestion, ClosedQuestionOption
 from django.forms import CheckboxSelectMultiple, NumberInput, TextInput
 
 
@@ -57,3 +57,46 @@ class TestForm(forms.ModelForm):
         }
 
 
+# Формы для вопросов
+class ClosedQuestionForm(forms.ModelForm):
+    question_index_number = forms.IntegerField(
+        label=(u'Можете указать другой порядковый номер вопроса'),
+        required=False,
+        help_text=(
+        u'Порядковый номер другого вопроса изменится соответственно. Если введенный номер больше номера последнего вопроса, то будет считаться, что введен номер последнего.'),
+        widget=NumberInput(attrs={'class': 'form-control', 'min': 1}),
+    )
+
+    add_options = forms.BooleanField(
+        label=(u'Добавить вместе с вариантами ответа'),
+        required=False,
+        help_text=(
+        u'Введите после содержимого самого вопроса (с новой строки, используя enter) слово "ВАРИАНТЫ", затем вновь перенос строки, а затем один или более вариантов ответа, разделяя их переносами строк (используйте enter, кнопка «Источник» должна быть неактивной. Минимум 2 варианта/элемента.')
+    )
+
+    class Meta:
+        model = ClosedQuestion
+        fields = ('question_content',
+                  'correct_option_numbers')
+
+        widgets = {
+            'correct_option_numbers': TextInput(attrs={'maxlength': 55, 'class': 'form-control',
+                                                       'placeholder': 'Допустимы цифры, запятые и пробел в формате 1, 2, 3',
+                                                       'pattern': '(?:\d+(?:,\s)?)+'}),
+        }
+
+class ClosedQuestionOptionForm(forms.ModelForm):
+    add_several = forms.BooleanField(
+        label=(u'Добавить несколько'),
+        required=False,
+        help_text=(u'Для разделения вариантов ответа используйте переносы строк (enter, каждый параграф станет отдельным вариантом). Кнопка «Источник» должна быть при этом неактивной.')
+    )
+
+    class Meta:
+        model = ClosedQuestionOption
+        fields = ('content',
+                  'option_number')
+
+        widgets = {
+            'option_number': NumberInput(attrs={'class': 'form-control', 'min': 1}),
+        }

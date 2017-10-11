@@ -2,10 +2,9 @@ from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView , UpdateView, View
 from django.utils.translation import ugettext_lazy as _
-from .models import Test
-from .forms import TestForm
+from .forms import TestForm,ClosedQuestionForm,ClosedQuestionOptionForm
 
-from .models import Test, Category, ResultScale, Tag, TestRate, Result
+from .models import Test, QuestionOfTest,ClosedQuestion, ClosedQuestionOption
 # Create your views here.
 
 class TestListAllView(ListView):
@@ -15,9 +14,9 @@ class TestListAllView(ListView):
 
 
 class TestDetailAllView(DetailView):
+    template_name = 'tests/test_form.html'
     def get_queryset(self):
         return Test.objects.filter(user__is_active=True)
-
 
 class TestListView(ListView):
     def get_queryset(self):
@@ -27,6 +26,14 @@ class TestListView(ListView):
 class TestDetailView(DetailView):
     def get_queryset(self):
         return Test.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super(TestDetailView, self).get_context_data(**kwargs)
+        context['QuestionOfTest_object_list'] = QuestionOfTest.objects.all()
+        context['ClosedQuestion_object_list'] = ClosedQuestion.objects.all()
+        context['ClosedQuestionOption_object_list'] = ClosedQuestionOption.objects.filter(question_id__in="1")
+        return context
+
 
 class TestCreateView(LoginRequiredMixin, CreateView):
     template_name = 'tests/form.html'

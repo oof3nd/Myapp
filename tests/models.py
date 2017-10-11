@@ -147,3 +147,56 @@ class Result(models.Model):
         ordering = ['owner', 'test']
         verbose_name = 'Результат прохождения теста'
         verbose_name_plural = 'Результаты прохождения тестов'
+
+class ClosedQuestion(models.Model):
+    question_of_test = models.OneToOneField('tests.QuestionOfTest', related_name='closed_question', null=True,
+            blank=False, on_delete=models.CASCADE, verbose_name='Нумерованный элемент (пункт) списка вопросов')
+    only_one_right = models.BooleanField('Только один вариант ответа — правильный.', default=True, blank=True)
+    question_content = models.TextField('Содержимое (контент) вопроса', null=False,
+        blank=False, help_text='Используйте сервисы хранения изображений, если требуется добавить картинку.', default='')
+    correct_option_numbers = models.CharField('Правильны(й/е) вариант/варианты',
+        max_length=55, blank=False, null=False, help_text='Номера одного или нескольких правильных вариантов через запятую.')
+
+    def __str__(self):
+        return 'Вопрос № ' + str(self.question_of_test.question_index_number) + ' (закрытый) теста ' + self.question_of_test.test.name
+
+    class Meta:
+        ordering = ['question_of_test']
+        verbose_name = 'Вопрос закрытого типа'
+        verbose_name_plural = 'Вопросы закрытого типа'
+
+class ClosedQuestionOption(models.Model):
+    question = models.ForeignKey('tests.ClosedQuestion', related_name='closed_question_options',
+        blank=False, on_delete=models.CASCADE,
+        verbose_name='Вопрос закрытого типа, которому принадлежит данный вариант ответа')
+    content = models.TextField('Содержимое (контент) варианта ответа',
+                            help_text='Используйте сервисы хранения изображений, если требуется добавить картинку. Не вводите пустые параграфы в качестве вариантов/элементов — такие варианты/элементы не будут добавлены. Также не будут добавлены варианты/последовательности, содержащие только пробелы.',
+                            null=False, blank=False, default='')
+    option_number = models.IntegerField('Порядковый номер варианта ответа на вопрос закр. типа', blank=True, null=False, help_text='Оставьте это поле пустым, чтобы добавить вариант вопроса последним (т.е. номер = кол-во вопросов + 1)')
+
+    def __str__(self):
+        return 'Вариант ответа № ' + str(self.option_number) + ' на вопрос № /' + str(self.question.question_of_test.question_index_number) + '/'
+
+    class Meta:
+        ordering = ['question', 'option_number']
+        verbose_name = 'Вариант ответа на вопрос закрытого типа'
+        verbose_name_plural = 'Варианты ответа на вопрос закрытого типа'
+
+
+class QuestionOfTest(models.Model):
+    test = models.ForeignKey('tests.Test', related_name='questions_of_test',
+            blank=False, on_delete=models.CASCADE, verbose_name='Тест, к которому относится вопрос')
+    question_index_number = models.IntegerField('Порядковый номер вопроса в тесте', blank=False, null=False)
+    type_of_question = models.CharField('Тип теста, чтобы знать, к какому типу вопроса обращаться через связь',
+            max_length=7, blank=False, unique=False,
+            choices=[('ClsdQ', 'закрытый'), ('OpndQ', 'открытый'),
+                     ('SqncQ', 'последовательность'), ('CmprsnQ', 'сопоставление')])
+
+    def __str__(self):
+        return 'Вопрос № ' + str(self.question_index_number) + \
+               ' (' + self.type_of_question + ') теста ' + self.test.name
+
+    class Meta:
+        ordering = ['test']
+        verbose_name = 'Вопрос теста'
+        verbose_name_plural = 'Вопросы теста'

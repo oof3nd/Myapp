@@ -2,11 +2,21 @@
 {% load i18n %}
 {% block head_title %}Тесты{% endblock head_title %}
 {% block content %}
-<h1>Список тестов</h1>
-<ul class="media-list list-group">
-        {% for obj in object_list %}
-	    <li class="media list-group-item">
-       <a class="btn btn-dark" href='{{ obj.id }}' role="button" >{{ obj.name }}</a>
-        {% endfor %}
-			</ul>
+    <div class="float-right">
+    <a href="{% url "tests:mylist" %}" class="btn btn-primary btn-sm " role="button">Мои тесты</a>
+    <a href="#" class="btn btn-primary btn-sm" role="button">Результаты</a>
+    </div>
+    <br>
+    <h1>Список тестов</h1>
+    <div class="row">
+        <div class="col-xl-4">
+            <div class="jumbotron">
+                <div class="list-group">
+                    {% for obj in object_list %}
+                         <a href='{{ obj.id }}' class="list-group-item list-group-item-action">{{ obj.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+         </div>
+    </div>
 {% endblock  %}
