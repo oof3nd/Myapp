@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from .models import Test, Category,ClosedQuestion, ClosedQuestionOption
+from .models import Test, Category, QuestionOfTest, ClosedQuestion, ClosedQuestionOption
 from django.forms import CheckboxSelectMultiple, NumberInput, TextInput
 
 

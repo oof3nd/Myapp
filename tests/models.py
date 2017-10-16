@@ -19,6 +19,7 @@ class Test(models.Model):
     anonymous_loader = models.BooleanField('Анонимный тест. На странице теста не будет указан пользователь, который загрузил тест.', default=False, blank=True)
     name = models.CharField('Наименование теста', max_length=200, null=False, blank=False, unique=True)
     description = models.TextField('Описание теста', default='Описание теста отсутствует...')
+    # help = models.(//) Подсказка
     controlling = models.BooleanField('Использование контроля прохождения теста', default=False)
     time_restricting = models.IntegerField('Ограничение времени прохождения теста в минутах', null=True, blank=True)
     rating = models.IntegerField('Рейтинг теста', default=0, editable=False)
@@ -159,6 +160,9 @@ class ClosedQuestion(models.Model):
 
     def __str__(self):
         return 'Вопрос № ' + str(self.question_of_test.question_index_number) + ' (закрытый) теста ' + self.question_of_test.test.name
+
+    # def get_absolute_url(self):
+    #     return reverse('tests:edit', kwargs={'pk': self.pk})
 
     class Meta:
         ordering = ['question_of_test']
