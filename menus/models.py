@@ -26,7 +26,7 @@ class Item(models.Model):
 
     def get_absolute_url(self): #get_absolute_url
         # return f"/article/{self.slug}"
-        return  reverse('menus:detail', kwargs={'pk': self.pk})
+        return reverse('menus:detail', kwargs={'pk': self.pk})
 
     class Meta:
         ordering = ['-updated','-timestamp'] #Item.objects.all()

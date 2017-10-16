@@ -1,18 +1,18 @@
+
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="{% url "home" %}">Лого</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-          <a class="nav-link" href="{% url "home" %}">Главная
+          <a class="nav-link" href="{% url "home" %}">Блог
 					<span class="sr-only"></span>
             </a>
         </li>
             {% if request.user.is_authenticated %}
             <li class="nav-item">
-                <a class="nav-link" href="{% url "menus:list" %}">Меню</a>
+                <a class="nav-link" href="{% url "tests:list" %}">Тесты</a>
             </li>
 			<li class="nav-item">
 				<a class="nav-link" href="{% url "article:list" %}">Новости</a>
@@ -22,7 +22,7 @@
 				<a class="nav-link" href="{% url "contacts" %}">Контакты</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="{% url "about" %}">О Компании</a>
+				<a class="nav-link" href="{% url "about" %}">Что-то?</a>
 			</li>
 
 {% comment %}          <li class="nav-item dropdown">
@@ -38,7 +38,6 @@
                 <input class="form-control mr-sm-2" type="text" placeholder="Поиск" aria-label="Search"  name="q">
                 <button class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit">Поиск</button>
             </form>
-
           {% if not request.user.is_authenticated %}
               <a class="btn btn-outline-primary my-2 my-sm-0 mr-sm-2" href="{% url "login" %}" role="button">Войти</a>
               <a class="btn btn-outline-primary my-2 my-sm-0 mr-sm-2" href="{% url "registration" %}" role="button">Регистрация</a>

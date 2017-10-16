@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Test.apps.TestConfig',
+    'tests.apps.TestsConfig',
     'menus.apps.MenusConfig',
     'profiles.apps.ProfilesConfig',
     'bootstrap3',
@@ -68,6 +69,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = 'Myapp.urls'
@@ -165,8 +167,9 @@ ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_AUTO_LOGIN = True
 
 # Keep our policy as strict as possible
-CSP_DEFAULT_SRC = ("'none'",)
-CSP_STYLE_SRC = ("'self'", 'cdnjs.cloudflare.com')
-CSP_SCRIPT_SRC = ("'self'",'cdnjs.cloudflare.com')
+CSP_DEFAULT_SRC = ("'self'")
+CSP_STYLE_SRC   = ("'self'", 'cdnjs.cloudflare.com')
+CSP_SCRIPT_SRC  = ("'self'","'unsafe-inline'",'cdnjs.cloudflare.com')
 #CSP_FONT_SRC = ("'self'", 'fonts.gstatic.com')
-CSP_IMG_SRC = ("'self'",)
+CSP_IMG_SRC     = ("'self'", 'data:')
+CSP_OBJECT_SRC  = ("'self'")
