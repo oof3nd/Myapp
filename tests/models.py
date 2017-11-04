@@ -162,7 +162,7 @@ class ClosedQuestion(models.Model):
         return 'Вопрос № ' + str(self.question_of_test.question_index_number) + ' (закрытый) теста ' + self.question_of_test.test.name
 
     # def get_absolute_url(self):
-    #     return reverse('tests:edit', kwargs={'pk': self.pk})
+    #     return reverse('tests:detail', kwargs={'pk': self.question_of_test.test.id})
 
     class Meta:
         ordering = ['question_of_test']
@@ -181,11 +181,11 @@ class ClosedQuestionOption(models.Model):
     def __str__(self):
         return 'Вариант ответа № ' + str(self.option_number) + ' на вопрос № /' + str(self.question.question_of_test.question_index_number) + '/'
 
+
     class Meta:
         ordering = ['question', 'option_number']
         verbose_name = 'Вариант ответа на вопрос закрытого типа'
         verbose_name_plural = 'Варианты ответа на вопрос закрытого типа'
-
 
 class QuestionOfTest(models.Model):
     test = models.ForeignKey('tests.Test', related_name='questions_of_test',
@@ -195,12 +195,38 @@ class QuestionOfTest(models.Model):
             max_length=7, blank=False, unique=False,
             choices=[('ClsdQ', 'закрытый'), ('OpndQ', 'открытый'),
                      ('SqncQ', 'последовательность'), ('CmprsnQ', 'сопоставление')])
+    level_of_question = models.ForeignKey('tests.LevelOfTest', related_name='level_of_question', on_delete=models.CASCADE,  verbose_name = 'Уровень вопроса')
+
+    def get_absolute_url(self):
+        return reverse('tests:createQC', kwargs={'pk': self.test.id})
 
     def __str__(self):
         return 'Вопрос № ' + str(self.question_index_number) + \
-               ' (' + self.type_of_question + ') теста ' + self.test.name
+               ' (' + self.type_of_question + ') теста ' + self.test.name + ' №  уровень' + str(self.level_of_question.level_index_number) \
+               + ' Имя уровня ' + str(self.level_of_question.name_level)
 
     class Meta:
         ordering = ['test']
         verbose_name = 'Вопрос теста'
         verbose_name_plural = 'Вопросы теста'
+
+class LevelOfTest(models.Model):
+    test = models.ForeignKey('tests.Test', related_name='levels_of_test',
+                             blank=False, on_delete=models.CASCADE, verbose_name='Тест, к которому относится вопрос')
+    level_index_number = models.IntegerField('Порядковый номер уровня в тесте', blank=False, null=False)
+    name_level = models.CharField('Наименование уровня', max_length=200, null=False, blank=False, unique=True)
+    solution = models.TextField('Решение уровня',
+                               help_text='Используйте сервисы хранения изображений, если требуется добавить картинку. Не вводите пустые параграфы в качестве вариантов/элементов — такие варианты/элементы не будут добавлены.',
+                               null=False, blank=False, default='')
+    def __str__(self):
+        return 'Уровень № ' + str(self.level_index_number) + \
+               ' теста ' + self.test.name
+
+    def get_absolute_url(self):
+        return reverse("tests:editL", kwargs={'pk': self.pk})
+
+
+    class Meta:
+        ordering = ['test']
+        verbose_name = 'Уровень теста'
+        verbose_name_plural = 'Уровни теста'
