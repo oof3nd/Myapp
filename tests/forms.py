@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from .models import Test, Category, QuestionOfTest, ClosedQuestion, ClosedQuestionOption
+from .models import Test, Category, QuestionOfTest, LevelOfTest,ClosedQuestion, ClosedQuestionOption
 from django.forms import CheckboxSelectMultiple, NumberInput, TextInput
 
 
@@ -58,6 +58,11 @@ class TestForm(forms.ModelForm):
 
 
 # Формы для вопросов
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model = QuestionOfTest
+        fields = ('test', 'question_index_number', 'type_of_question', 'level_of_question')
+
 class ClosedQuestionForm(forms.ModelForm):
     question_index_number = forms.IntegerField(
         label=(u'Можете указать другой порядковый номер вопроса'),
@@ -76,7 +81,7 @@ class ClosedQuestionForm(forms.ModelForm):
 
     class Meta:
         model = ClosedQuestion
-        fields = ('question_content',
+        fields = ('question_of_test','question_content',
                   'correct_option_numbers')
 
         widgets = {
@@ -100,3 +105,9 @@ class ClosedQuestionOptionForm(forms.ModelForm):
         widgets = {
             'option_number': NumberInput(attrs={'class': 'form-control', 'min': 1}),
         }
+
+# Форма для уровня тесте
+class LevelForm(forms.ModelForm):
+    class Meta:
+        model = LevelOfTest
+        fields = ('test', 'level_index_number', 'name_level', 'solution')
