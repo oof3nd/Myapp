@@ -1,0 +1,41 @@
+{% extends "Test/base.html" %}
+
+{% load i18n %}
+{% block head_title %}Тест{% endblock head_title %}
+{% block content %}
+
+  <div class="jumbotron ">
+       <h3 class="d-flex">
+           <span class="badge badge-secondary align-self-center mr-auto">Уровень {{LOT.level_index_number }}</span>
+           <button class="btn btn-warning btn-sm align-self-center ml-auto" data-dismiss="alert" id="btn-solution">Подсказка уровня</button>
+       </h3>
+  <div class="alert alert-warning alert-dismissible" id="alert-solution" role="alert">
+  {{ LOT.solution }}
+  <button type="button" class="close" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+  </div>
+
+     <ul class="list-group">
+         <li class="list-group-item active">Вопрос № {{ QOF.question_index_number }}</li>
+        <li class="list-group-item">Описание вопроса: {{ CQ.question_content }}</li>
+    </ul>
+    <br>
+    <form action="" method="post">{% csrf_token %}
+        <div class="jumbotron">
+    <div class="custom-controls-stacked">
+    {% for i in CQO %}
+      <label class="custom-control custom-radio"  for="choice{{ i.option_number }}">
+        <input id="choice{{ i.option_number }}" name="radio-stacked" type="radio" class="custom-control-input" value="{{ i.id }}" />
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description">{{ i.content }}</span>
+      </label>
+        {% endfor %}
+    </div>
+        </div>
+        <input type="submit" class="btn btn-success btn-lg btn-block" value="Ответить" />
+    </form>
+{% endblock  %}
+
+

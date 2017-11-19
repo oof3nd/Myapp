@@ -210,6 +210,7 @@ class QuestionOfTest(models.Model):
         verbose_name = 'Вопрос теста'
         verbose_name_plural = 'Вопросы теста'
 
+
 class LevelOfTest(models.Model):
     test = models.ForeignKey('tests.Test', related_name='levels_of_test',
                              blank=False, on_delete=models.CASCADE, verbose_name='Тест, к которому относится вопрос')
@@ -223,8 +224,7 @@ class LevelOfTest(models.Model):
                ' теста ' + self.test.name
 
     def get_absolute_url(self):
-        return reverse("tests:editL", kwargs={'pk': self.pk})
-
+        return reverse("tests:levels:editL", kwargs={'pk':self.test.id,'level_pk': self.id})
 
     class Meta:
         ordering = ['test']

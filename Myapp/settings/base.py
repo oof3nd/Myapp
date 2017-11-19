@@ -168,8 +168,8 @@ REGISTRATION_AUTO_LOGIN = True
 
 # Keep our policy as strict as possible
 CSP_DEFAULT_SRC = ("'self'")
-CSP_STYLE_SRC   = ("'self'", 'cdnjs.cloudflare.com')
-CSP_SCRIPT_SRC  = ("'self'","'unsafe-inline'",'cdnjs.cloudflare.com')
+CSP_STYLE_SRC   = ("'self'","'unsafe-inline'", 'cdnjs.cloudflare.com')
+CSP_SCRIPT_SRC  = ("'self'","'unsafe-inline'","'unsafe-eval'", 'cdnjs.cloudflare.com')
 #CSP_FONT_SRC = ("'self'", 'fonts.gstatic.com')
 CSP_IMG_SRC     = ("'self'", 'data:')
 CSP_OBJECT_SRC  = ("'self'")

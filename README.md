@@ -1,4 +1,3 @@
 
-# Test blog ~
-# With registration/sing in and out, following, create/update article, search
+# System testing knowledge with blog
   https://00f3nd.pythonanywhere.com

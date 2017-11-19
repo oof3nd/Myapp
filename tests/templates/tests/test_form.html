@@ -3,10 +3,12 @@
 {% block head_title %}Тесты{% endblock head_title %}
 {% block content %}
 <h1>{{ object.name }}</h1>
-<ul class="media-list list-group">
-            <li class="media list-group-item">{{ object.category }}</li>
-            <li class="media list-group-item">{{ object.description }}</li>
-           <li class="media list-group-item">{{ object.created_date }}</li>
+<ul class="list-group">
+            <li class=" list-group-item">{{ object.category }}</li>
+            <li class=" list-group-item">{{ object.description }}</li>
+           <li class=" list-group-item">{{ object.created_date }}</li>
 			</ul>
+    <br>
+    <a class="btn btn-success" href="{% url "tests:testing" pk=test.id %}" role="button">Пройти тест</a>
 {% endblock  %}
 
