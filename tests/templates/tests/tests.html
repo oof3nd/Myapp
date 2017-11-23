@@ -10,13 +10,11 @@
     <h1>Список тестов</h1>
 {#   <div class="row">#}
 {#      <div class="col-xl-4">#}
-{#            <div class="jumbotron">#}
-                <div class="list-group">
-                    {% for obj in object_list %}
-                         <a href='{{ obj.id }}' class="list-group-item list-group-item-action">{{ obj.name }}</a>
-                    {% endfor %}
-                </div>
-{#            </div>#}
+        {% for obj in object_list %}
+            <div  class="breadcrumb">
+                <a class="btn btn-secondary  mb-3"  href='{{ obj.id }}'>{{ obj.name }}</a>
+            </div>
+        {% endfor %}
 {#         </div>#}
 {#    </div>#}
 {% endblock  %}

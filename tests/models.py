@@ -197,8 +197,11 @@ class QuestionOfTest(models.Model):
                      ('SqncQ', 'последовательность'), ('CmprsnQ', 'сопоставление')])
     level_of_question = models.ForeignKey('tests.LevelOfTest', related_name='level_of_question', on_delete=models.CASCADE,  verbose_name = 'Уровень вопроса')
 
+
     def get_absolute_url(self):
-        return reverse('tests:createQC', kwargs={'pk': self.test.id})
+        # Проверка типа вопроса для редиректа создания
+        if self.type_of_question == 'ClsdQ':
+            return reverse('tests:levels:questions:createQC', kwargs={'pk':self.test.id,'level_pk': self.level_of_question.id , 'question_pk': self.id })
 
     def __str__(self):
         return 'Вопрос № ' + str(self.question_index_number) + \

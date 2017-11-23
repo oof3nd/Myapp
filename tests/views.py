@@ -11,7 +11,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse,reverse_lazy
 from .forms import TestForm,ClosedQuestionForm,ClosedQuestionOptionForm,LevelForm,QuestionForm
 from .models import Test, QuestionOfTest,LevelOfTest,ClosedQuestion, ClosedQuestionOption
-# Create your views here.
 
 class TestListAllView(ListView):
     template_name = 'tests/tests.html'
@@ -58,13 +57,12 @@ class TestCreateView(LoginRequiredMixin, CreateView):
     def get_form_kwargs(self):
         kwargs = super(TestCreateView, self).get_form_kwargs()
         kwargs['user'] = self.request.user
-        #kwargs['instance'] = Item.objects.filter(user=self.request.user).first()
         return kwargs
 
     def get_success_url(self):
         return reverse('tests:mylist')
 
-#изменение
+#изменение теста
 class TestUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'tests/form.html'
     form_class = TestForm
@@ -79,12 +77,43 @@ class TestUpdateView(LoginRequiredMixin, UpdateView):
     def get_form_kwargs(self):
         kwargs = super(TestUpdateView, self).get_form_kwargs()
         kwargs['user'] = self.request.user
-        #kwargs['instance'] = Item.objects.filter(user=self.request.user).first()
         return kwargs
 
     def get_success_url(self):
         test_pk = self.kwargs.get('pk')
         return reverse('tests:detail', kwargs={'pk': test_pk})
+
+#Ответы
+class CQOCreateView(LoginRequiredMixin, CreateView):
+    model = ClosedQuestionOption
+    template_name = 'tests/form.html'
+    form_class = ClosedQuestionOptionForm
+
+    def get_initial(self):
+        question_id = self.kwargs.get('question_pk')
+        closedquestion_id = ClosedQuestion.objects.get(question_of_test_id=question_id)
+        option_number = ClosedQuestionOption.objects.filter(question_id=closedquestion_id).count()+1
+        initial = {'question': closedquestion_id, 'option_number': option_number, }
+        return initial
+
+
+    def get_queryset(self):
+        question_id = self.kwargs.get('question_pk')
+        return ClosedQuestion.objects.filter(question_of_test_id=question_id)
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        return super(CQOCreateView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(CQOCreateView, self).get_context_data(**kwargs)
+        context['title'] = 'Создание ответа на вопрос'
+        return context
+
+    def get_success_url(self):
+        test_pk = self.kwargs.get('pk')
+        return reverse('tests:detail', kwargs = {'pk': test_pk})
+
 
 #Вопросы
 class QOTCreateView(LoginRequiredMixin, CreateView):
@@ -104,7 +133,6 @@ class QOTCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         obj = form.save(commit=False)
-        #obj.question_of_test = self.request.question_of_test
         return super(QOTCreateView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -112,25 +140,23 @@ class QOTCreateView(LoginRequiredMixin, CreateView):
         context['title'] = 'Создание вопроса'
         return context
 
-        # def get_form_kwargs(self):
-        #     kwargs = super(QOTCreateView, self).get_form_kwargs()
-        #     print(kwargs)
-        #     kwargs['question_of_test_id'] = self.request.question_of_test_id
-        #     #kwargs['instance'] = Item.objects.filter(user=self.request.user).first()
-        #     return 0
-
 # вопросы закрытого типа
 class CQCreateView(LoginRequiredMixin, CreateView):
     model = ClosedQuestion
     template_name = 'tests/form.html'
+    pk_url_kwarg = 'question_pk'
     form_class = ClosedQuestionForm
+
+    def get_initial(self):
+        question_id = self.kwargs.get('question_pk')
+        initial = {'question_of_test':question_id,}
+        return initial
 
     def get_queryset(self):
         return ClosedQuestion.objects.filter(user=self.request.user)
 
     def form_valid(self, form):
         obj = form.save(commit=False)
-        #obj.question_of_test = self.request.question_of_test
         return super(CQCreateView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -138,12 +164,6 @@ class CQCreateView(LoginRequiredMixin, CreateView):
         context['title'] = 'Создание вопроса закрытого типа'
         return context
 
-        # def get_form_kwargs(self):
-        #     kwargs = super(QOTCreateView, self).get_form_kwargs()
-        #     print(kwargs)
-        #     kwargs['question_of_test_id'] = self.request.question_of_test_id
-        #     #kwargs['instance'] = Item.objects.filter(user=self.request.user).first()
-        #     return 0
     def get_success_url(self):
         test_pk = self.kwargs.get('pk')
         return reverse('tests:detail', kwargs = {'pk': test_pk})
@@ -154,9 +174,7 @@ class LOTCreateView(LoginRequiredMixin, CreateView):
     template_name = 'tests/form.html'
     model = LevelOfTest
     form_class = LevelForm
-    #fields = '__all__'
 
-    #initial = {'test': testid , }
     def get_initial(self):
         test_id = self.kwargs.get('pk')
         level_index_number = LevelOfTest.objects.filter(test_id=test_id).count()+1
@@ -165,10 +183,6 @@ class LOTCreateView(LoginRequiredMixin, CreateView):
 
     def get_queryset(self):
         return LevelOfTest.objects.all()
-
-    # def get(self,request, *args, **kwargs):
-    #     fields = ['test','level_index_number','name_level','solution']
-    #     self.fields['test'] = self.kwargs.get('pk')
 
     def form_valid(self, form):
         self.obj = form.save(commit=False)
@@ -179,21 +193,12 @@ class LOTCreateView(LoginRequiredMixin, CreateView):
         context['title'] = 'Создание уровня'
         return context
 
-    # редирект обратно к списку уровням
+    # редирект обратно к тесту
     def get_success_url(self):
-        test_pk = self.kwargs.get('test_id')
+        test_pk = self.kwargs.get('pk')
         return reverse('tests:detail', kwargs = {'pk': test_pk})
 
-    # def get_form_kwargs(self):
-    #     kwargs = super(LOTCreateView, self).get_form_kwargs()
-    #     kwargs['request'] = self.request
-    #     #kwargs['instance'] = Item.objects.filter(user=self.request.user).first()
-    #     return kwargs
-
-    # def get_success_url(self):
-    #     print("successfully posted")
-    #     return reverse('arenas:detail', kwargs={'pk': self.object.pk})
-
+# Редактирование уровня
 class LOTUpdateView(LoginRequiredMixin, UpdateView):
     model = LevelOfTest
     pk_url_kwarg = 'level_pk'
@@ -208,16 +213,10 @@ class LOTUpdateView(LoginRequiredMixin, UpdateView):
         context['title'] = 'Обновление уровня'
         return context
 
-    # редирект обратно к списку уровням
+    # редирект обратно к тесту
     def get_success_url(self):
         test_pk = self.kwargs.get('pk')
         return reverse('tests:detail', kwargs={'pk': test_pk})
-
-    # def get_form_kwargs(self):
-    #     kwargs = super(LOTUpdateView, self).get_form_kwargs()
-    #     kwargs['user'] = self.request.user
-    #     #kwargs['instance'] = Item.objects.filter(user=self.request.user).first()
-    #     return kwargs
 
 # Проверка
 # class Testing(DetailView):
