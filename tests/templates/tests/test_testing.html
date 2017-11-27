@@ -3,10 +3,19 @@
 {% load i18n %}
 {% block head_title %}Тест{% endblock head_title %}
 {% block content %}
-
   <div class="jumbotron ">
+    <nav aria-label="Уровни теста">
+      <ul class="pagination pagination-sm">
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1">Уровни</a>
+        </li>
+          {% for i in LOTS %}
+              <li class="page-item"><a class="btn btn-primary btn-sm ml-1" href="{% url "tests:insidetest:insidelevel:insidequestion:testing" pk=i.test_id level_pk=i.id question_pk=1 %}">{{ i.level_index_number }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
        <h3 class="d-flex">
-           <span class="badge badge-secondary align-self-center mr-auto">Уровень {{LOT.level_index_number }}</span>
+           <span class="badge badge-secondary align-self-center mr-auto">Уровень {{LOT.level_index_number}}</span>
            <button class="btn btn-warning btn-sm align-self-center ml-auto" data-dismiss="alert" id="btn-solution">Подсказка уровня</button>
        </h3>
   <div class="alert alert-warning alert-dismissible" id="alert-solution" role="alert">
@@ -37,5 +46,3 @@
         <input type="submit" class="btn btn-success btn-lg btn-block" value="Ответить" />
     </form>
 {% endblock  %}
-
-

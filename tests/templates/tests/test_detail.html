@@ -15,14 +15,12 @@
     <br>
         {% for lofq in LevelOfTest_object_list%}
             <div class="jumbotron">
-                <div class="d-flex  mb-3">
-                    <a class="btn btn-primary btn-sm align-self-center ml-auto"  href="{% url "tests:levels:questions:createQ" pk=test.id level_pk=lofq.id %}" role="button">Добавить вопрос</a>
-                </div>
                 <div class="alert alert-light" role="alert">
                    <h3 class="d-flex">
                        <span class="badge badge-secondary align-self-center">Уровень {{ lofq.level_index_number }}</span>
                        <a class="btn btn-primary btn-sm align-self-center ml-3" href="{{ lofq.get_absolute_url }}" data-toggle="tooltip" data-placement="top" title="Изменить уровень" role="button"><span class="oi oi-pencil"></span></a>
                        <a class="btn btn-danger btn-sm align-self-center ml-3"  href="#{#  url "tests:levels:questions:options:editQCO" pk=test.id level_pk=lofq.id question_pk=qofl.id   #}" data-toggle="tooltip" data-placement="top" title="Удалить уровень" role="button"><span class="oi oi-x"></span></a>
+                       <a class="btn btn-primary btn-sm align-self-center ml-auto"  href="{% url "tests:levels:questions:createQ" pk=test.id level_pk=lofq.id %}" role="button">Добавить вопрос</a>
                    </h3>
                 </div>
                 {% for qofl in QuestionOfTest_object_list %}

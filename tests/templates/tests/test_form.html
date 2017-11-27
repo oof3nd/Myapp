@@ -9,6 +9,6 @@
            <li class=" list-group-item">{{ object.created_date }}</li>
 			</ul>
     <br>
-    <a class="btn btn-success" href="{% url "tests:testing" pk=test.id %}" role="button">Пройти тест</a>
+<a class="btn btn-success" href="{% url "tests:insidetest:insidelevel:insidequestion:testing" pk=test.id level_pk=LOT.id question_pk=QOF.id %}" role="button">Пройти тест</a>
 {% endblock  %}
 

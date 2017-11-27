@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.core import serializers
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, DetailView, CreateView , UpdateView
+from django.views.generic import ListView, DetailView, CreateView , UpdateView, TemplateView
 from django.views.generic.base import ContextMixin
 from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse,reverse_lazy
@@ -19,8 +19,20 @@ class TestListAllView(ListView):
 
 class TestDetailAllView(DetailView):
     template_name = 'tests/test_form.html'
+
     def get_queryset(self):
         return Test.objects.filter(user__is_active=True)
+
+    def get_context_data(self,*args,**kwargs):
+        context = super(TestDetailAllView, self).get_context_data(**kwargs)
+        context['LOT'] = LevelOfTest.objects.filter(test_id=self.object.id).order_by('level_index_number').first()
+        LOT = LevelOfTest.objects.filter(test_id=self.object.id).order_by('level_index_number').first()
+        context['QOF'] = QuestionOfTest.objects.filter(level_of_question_id=LOT).order_by('question_index_number').first()
+        QOF = QuestionOfTest.objects.filter(level_of_question_id=LOT).order_by('question_index_number').first()
+        context['CQ'] = ClosedQuestion.objects.get(question_of_test_id=QOF) # выводим только те вопросы, которые входят в этот теста
+        CQ = ClosedQuestion.objects.get(question_of_test_id=QOF)
+        context['CQO'] =  ClosedQuestionOption.objects.filter(question_id=CQ)
+        return context
 
 class TestListView(ListView):
     def get_queryset(self):
@@ -84,6 +96,7 @@ class TestUpdateView(LoginRequiredMixin, UpdateView):
         return reverse('tests:detail', kwargs={'pk': test_pk})
 
 #Ответы
+#Создание ответа
 class CQOCreateView(LoginRequiredMixin, CreateView):
     model = ClosedQuestionOption
     template_name = 'tests/form.html'
@@ -114,6 +127,25 @@ class CQOCreateView(LoginRequiredMixin, CreateView):
         test_pk = self.kwargs.get('pk')
         return reverse('tests:detail', kwargs = {'pk': test_pk})
 
+# Редактирование ответа
+class CQOUpdateView(LoginRequiredMixin, UpdateView):
+    model = ClosedQuestionOption
+    pk_url_kwarg = 'level_pk'
+    template_name = 'tests/form.html'
+    form_class = LevelForm
+    def get_queryset(self):
+        level_id = self.kwargs.get('level_pk')
+        return LevelOfTest.objects.filter(id=level_id)
+
+    def get_context_data(self, **kwargs):
+        context = super(CQOUpdateView, self).get_context_data(**kwargs)
+        context['title'] = 'Обновление уровня'
+        return context
+
+    # редирект обратно к тесту
+    def get_success_url(self):
+        test_pk = self.kwargs.get('pk')
+        return reverse('tests:detail', kwargs={'pk': test_pk})
 
 #Вопросы
 class QOTCreateView(LoginRequiredMixin, CreateView):
@@ -219,24 +251,63 @@ class LOTUpdateView(LoginRequiredMixin, UpdateView):
         return reverse('tests:detail', kwargs={'pk': test_pk})
 
 # Проверка
-# class Testing(DetailView):
-#     template_name = 'tests/test_testing.html'
-#     def get_queryset(self):
-#         return LevelOfTest.objects.all()
-    # def post(self, request, *args, **kwargs):
-    #     data = serializers.serialize('json',Test.objects.all().filter())
-    #     return HttpResponse(json.loads(data))
+class Testing(LoginRequiredMixin, DetailView):
+    template_name = 'tests/test_testing.html'
 
-@login_required
-def Testing(request,pk):
-    LOT = LevelOfTest.objects.all().filter(test_id=pk).first() #Первый уровнь
-    QOF = QuestionOfTest.objects.all().filter(test_id=pk).first() #Первый вопрос
-    CQ = ClosedQuestion.objects.all().filter(question_of_test__test_id=pk).first()
-    CQO = ClosedQuestionOption.objects.all().filter(question__question_of_test__test_id=pk)
-    context = {
-        'LOT':LOT,
-        'QOF':QOF,
-        'CQ': CQ,
-        'CQO': CQO,
-    }
-    return render(request,'tests/test_testing.html',context)
+    # def get(self, request, *args, **kwargs):
+    #     test_pk = self.kwargs.get('pk')
+    #     level_pk = LevelOfTest.objects.filter(test_id=self.kwargs.get('pk')).order_by('level_index_number').first()
+    #     question_pk = QuestionOfTest.objects.filter(level_of_question_id=level_pk).order_by('question_index_number').first()
+    #     return reverse('tests:insidetest:insidelevel:insidequestion:testing', kwargs={'pk': test_pk,'level_pk':level_pk.id, 'question_pk':question_pk.id })
+
+    def get_queryset(self):
+        return LevelOfTest.objects.all()
+    def post(self, request, *args, **kwargs):
+        data = serializers.serialize('json',Test.objects.filter(id=self.kwargs.get('pk')))
+        test_pk = self.kwargs.get('pk')
+        level_pk = self.kwargs.get('level_pk')
+        question_pk = self.kwargs.get('question_pk')
+        last_level = LevelOfTest.objects.filter(test_id=test_pk).order_by('id').last().id
+        print(last_level)
+        if int(level_pk)<int(last_level):
+            level_pk+=1
+            print(level_pk)
+            return HttpResponseRedirect(reverse('tests:insidetest:insidelevel:insidequestion:testing', kwargs={'level_pk':level_pk, 'pk':test_pk, 'question_pk':question_pk}))
+        else:
+            return HttpResponse(json.loads(data))
+
+    def get_context_data(self,*args,**kwargs):
+        context = super(Testing, self).get_context_data(**kwargs)
+        context['LOTS'] = LevelOfTest.objects.filter(test_id=self.kwargs.get('pk')).order_by('level_index_number')
+        context['QOFS'] = QuestionOfTest.objects.filter(test_id=self.kwargs.get('pk')).filter(level_of_question_id=self.kwargs.get('level_pk'))
+        context['LOT'] = LevelOfTest.objects.filter(test_id=self.kwargs.get('pk'))
+        context['QOF'] = QuestionOfTest.objects.filter(level_of_question_id=self.kwargs.get('level_pk'))
+        context['CQ'] = ClosedQuestion.objects.get(question_of_test_id=self.kwargs.get('question_pk')) # выводим только те вопросы, которые входят в этот теста
+        CQ = ClosedQuestion.objects.get(question_of_test_id=self.kwargs.get('question_pk'))
+        context['CQO'] =  ClosedQuestionOption.objects.filter(question_id=CQ)
+        return context
+
+    # # редирект
+    # def get_success_url(self):
+    #     test_pk = self.kwargs.get('pk')
+    #     return reverse('tests:detail', kwargs={'pk': test_pk})
+
+# @login_required
+# def Testing(request,pk):
+#     LOT = LevelOfTest.objects.filter(test_id=pk).order_by('level_index_number').first() #Первый уровнь
+#     LOTS = LevelOfTest.objects.filter(test_id=pk)
+#     QOF = QuestionOfTest.objects.filter(level_of_question_id=LOT).order_by('question_index_number').first() #Первый вопрос
+#     CQ = ClosedQuestion.objects.get(question_of_test_id=QOF)
+#     CQO = ClosedQuestionOption.objects.filter(question_id=CQ)
+#
+#     correct_qu_amount = 0
+#     wrong_qu_amount = 0
+#     counter = 1
+#
+#     context = {
+#         'LOT':LOT,
+#         'QOF':QOF,
+#         'CQ': CQ,
+#         'CQO': CQO,
+#     }
+#     return render(request,'tests/test_testing.html',context)
