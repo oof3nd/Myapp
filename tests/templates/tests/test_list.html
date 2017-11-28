@@ -4,16 +4,14 @@
 {% block content %}
 <a href="{% url "tests:create" %}" class="btn btn-primary btn-sm float-right" role="button">Добавить тест</a><br>
 <h1>Список моих тестов</h1>
-    <div class="list-group">
         {% for obj in object_list %}
-        <li class="list-group-item">
-       <a class="btn btn-dark btn-sm" href='{{ obj.id }}'  role="button" >{{ obj.name }}</a>
+    <div class="d-flex jumbotron">
+       <a class="btn btn-secondary" href='{{ obj.id }}'  role="button" >{{ obj.name }}</a>
         {% if  user.is_authenticated  %}
-            <a class="btn btn-dark btn-sm float-right" href="{{ obj.get_absolute_url }}" role="button" >Изменить</a>
+            <a class="btn btn-primary ml-auto" href="{{ obj.get_absolute_url }}" role="button" >Изменить</a>
         {% endif %}
+    </div>
         {% empty %}
        <p>Нет тестов</p>
-        </li>
         {% endfor %}
-    </div>
 {% endblock  %}

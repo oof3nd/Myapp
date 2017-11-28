@@ -3,10 +3,9 @@
 {% block head_title %}Мои тесты{% endblock head_title %}
 {% block content %}
     <div class="float-right">
-    <a href="{% url "tests:createL" pk=test.id %}" class="btn btn-primary btn-sm " role="button">Добавить уровень теста</a>
-    <a href="{% url "tests:createQ" pk=test.id %}" class="btn btn-primary btn-sm " role="button">Добавить вопрос</a>
+    <a href="{% url "tests:levels:createL" pk=test.id %}" class="btn btn-primary btn-sm " role="button">Добавить уровень теста</a>
     </div>
-    <h1>{{ object.name }}</h1>
+   <h1 >{{ object.name }}</h1>
         <ul class="media-list list-group">
             <li class="media list-group-item">{{ object.category }}</li>
             <li class="media list-group-item">{{ object.description }}</li>
@@ -18,26 +17,37 @@
             <div class="jumbotron">
                 <div class="alert alert-light" role="alert">
                    <h3 class="d-flex">
-                       <span class="badge badge-secondary align-self-center mr-auto">Уровень {{ lofq.level_index_number }}</span>
-                       <a class="btn btn-dark btn-sm align-self-center ml-auto" href="{{ lofq.get_absolute_url }}" >Изменить</a>
+                       <span class="badge badge-secondary align-self-center">Уровень {{ lofq.level_index_number }}</span>
+                       <a class="btn btn-primary btn-sm align-self-center ml-3" href="{{ lofq.get_absolute_url }}" data-toggle="tooltip" data-placement="top" title="Изменить уровень" role="button"><span class="oi oi-pencil"></span></a>
+                       <a class="btn btn-danger btn-sm align-self-center ml-3"  href="#{#  url "tests:levels:questions:options:editQCO" pk=test.id level_pk=lofq.id question_pk=qofl.id   #}" data-toggle="tooltip" data-placement="top" title="Удалить уровень" role="button"><span class="oi oi-x"></span></a>
+                       <a class="btn btn-primary btn-sm align-self-center ml-auto"  href="{% url "tests:levels:questions:createQ" pk=test.id level_pk=lofq.id %}" role="button">Добавить вопрос</a>
                    </h3>
                 </div>
                 {% for qofl in QuestionOfTest_object_list %}
                     {% if lofq.id == qofl.level_of_question_id %}
                         <ul class="list-group">
-                        <li class="list-group-item active">Вопрос № {{ qofl.question_index_number }}</li>
+                        <li class="d-flex list-group-item active">
+                            <h4><span class="badge badge-secondary mr-auto">Вопрос № {{ qofl.question_index_number }}</span></h4>
+                            <a class="btn btn-light btn-sm align-self-center ml-3"  href="#{#  url "tests:levels:questions:options:editQCO" pk=test.id level_pk=lofq.id question_pk=qofl.id   #}" data-toggle="tooltip" data-placement="top" title="Изменить вопрос" role="button"><span class="oi oi-pencil"></span></a>
+                            <a class="btn btn-danger btn-sm align-self-center ml-3"  href="#{#  url "tests:levels:questions:options:editQCO" pk=test.id level_pk=lofq.id question_pk=qofl.id   #}" data-toggle="tooltip" data-placement="top" title="Удалить вопрос" role="button"><span class="oi oi-x"></span></a>
+                            <a class="btn btn-success btn-sm align-self-center ml-auto"  href="{% url "tests:levels:questions:options:createQCO" pk=test.id level_pk=lofq.id question_pk=qofl.id  %}" data-toggle="tooltip" data-placement="top" title="Добавить ответ" role="button"><span class="oi oi-plus"></span></a>
+                        </li>
                         {% for objc in ClosedQuestion_object_list %}
                             {% if qofl.id == objc.question_of_test_id %}
                                 <li class="list-group-item">Описание вопроса: {{ objc.question_content }}</li>
                                 {% for objcq in ClosedQuestionOption_object_list %}
                                     {% if objc.id == objcq.question_id %}
-                                <li class="list-group-item">{{ objcq.content }}</li>
+                                <li class="d-flex list-group-item">
+                                    {{ objcq.option_number }}. {{ objcq.content }}
+                                    <a class="btn btn-primary btn-sm align-self-center ml-auto"  href="#{#  url "tests:levels:questions:options:editQCO" pk=test.id level_pk=lofq.id question_pk=qofl.id   #}" data-toggle="tooltip" data-placement="top" title="Изменить ответ" role="button"><span class="oi oi-pencil"></span></a>
+                                    <a class="btn btn-danger btn-sm align-self-center ml-3"  href="#{#  url "tests:levels:questions:options:editQCO" pk=test.id level_pk=lofq.id question_pk=qofl.id   #}" data-toggle="tooltip" data-placement="top" title="Удалить ответ" role="button"><span class="oi oi-x"></span></a>
+                                </li>
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
                         {% endfor %}
+                            <br>
                         </ul>
-                        <br>
                     {% endif %}
                 {% endfor %}
             </div>

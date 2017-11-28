@@ -99,7 +99,7 @@ class ClosedQuestionOptionForm(forms.ModelForm):
 
     class Meta:
         model = ClosedQuestionOption
-        fields = ('content',
+        fields = ('question','content',
                   'option_number')
 
         widgets = {
