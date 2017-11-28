@@ -172,7 +172,7 @@ class QOTCreateView(LoginRequiredMixin, CreateView):
         context['title'] = 'Создание вопроса'
         return context
 
-# вопросы закрытого типа
+# Вопросы закрытого типа
 class CQCreateView(LoginRequiredMixin, CreateView):
     model = ClosedQuestion
     template_name = 'tests/form.html'
@@ -279,9 +279,9 @@ class Testing(LoginRequiredMixin, DetailView):
     def get_context_data(self,*args,**kwargs):
         context = super(Testing, self).get_context_data(**kwargs)
         context['LOTS'] = LevelOfTest.objects.filter(test_id=self.kwargs.get('pk')).order_by('level_index_number')
-        context['QOFS'] = QuestionOfTest.objects.filter(test_id=self.kwargs.get('pk')).filter(level_of_question_id=self.kwargs.get('level_pk'))
-        context['LOT'] = LevelOfTest.objects.filter(test_id=self.kwargs.get('pk'))
-        context['QOF'] = QuestionOfTest.objects.filter(level_of_question_id=self.kwargs.get('level_pk'))
+        context['QOFS'] = QuestionOfTest.objects.filter(level_of_question_id=self.kwargs.get('level_pk')).order_by('question_index_number').first()
+        context['LOT'] = LevelOfTest.objects.filter(test_id=self.kwargs.get('pk')).order_by('level_index_number').first()
+        context['QOF'] = QuestionOfTest.objects.filter(level_of_question_id=self.kwargs.get('level_pk')).order_by('question_index_number').first()
         context['CQ'] = ClosedQuestion.objects.get(question_of_test_id=self.kwargs.get('question_pk')) # выводим только те вопросы, которые входят в этот теста
         CQ = ClosedQuestion.objects.get(question_of_test_id=self.kwargs.get('question_pk'))
         context['CQO'] =  ClosedQuestionOption.objects.filter(question_id=CQ)
