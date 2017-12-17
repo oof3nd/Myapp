@@ -5,16 +5,19 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
-        <meta name="author" content=""> {% include 'snippets/css.html' %}
+        <meta name="author" content="">
+{#        Подключение CSS#}
+        {% include 'snippets/css.html' %}
+{#    Динамический заголово#}
         <title>{% block head_title %}{% endblock head_title %}</title>
     </head>
 <body>
-
+{#    Подключение навигации#}
     {% include 'snippets/nav.html' %}
     <div class="container">
+{#    Динамический блок контента#}
         {% block content %}{% endblock content %}
     </div>
-    <!-- /.container -->
     <footer class="footer">
        <div class="container">
            <h5><a href="https://github.com/oof3nd"> blog by oof3nd</a></h5>
@@ -22,6 +25,7 @@
        </div>
     </footer>
     <button onclick="topFunction()" id="btnback" title="Наверх">Наверх</button>
+{#   Подключение JS#}
     {% include 'snippets/js.html' %}
 </body>
 </html>
