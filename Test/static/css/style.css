@@ -1,5 +1,4 @@
-/* Show it is fixed to the top */
-
+/*Базовые*/
 html {
   position: relative;
   min-height: 100%;
@@ -9,9 +8,10 @@ body{
     min-height: 75rem;
     margin-bottom: 10%;
     padding-top: 4.5rem;
-    background-color: rgba(222, 233, 247, 0.55);
+    background-color: rgba(222, 233, 247, 0.55); /*цвет фота*/
 }
 
+/*Нижняя часть*/
 .footer {
     position:  absolute;
     padding: 2rem 0;
@@ -24,7 +24,7 @@ body{
 .footer a {
     text-decoration: none;
 }
-
+/*Кнопка наверх*/
 #btnback{
     display: none;
     position: fixed;
@@ -58,6 +58,7 @@ body{
     border-color: #6c757d;
 }
 
+/*Подсказка*/
 #alert-solution
 {
     display: none;

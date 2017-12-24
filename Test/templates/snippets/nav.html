@@ -6,7 +6,7 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-          <a class="nav-link" href="{% url "home" %}">Блог
+          <a class="nav-link" href="{% url "home" %}">Главная
 					<span class="sr-only"></span>
             </a>
         </li>
@@ -15,14 +15,14 @@
                 <a class="nav-link" href="{% url "tests:list" %}">Тесты</a>
             </li>
 			<li class="nav-item">
-				<a class="nav-link" href="{% url "article:list" %}">Новости</a>
+				<a class="nav-link" href="{% url "article:list" %}">Блог</a>
 			</li>
             {% endif %}
 			<li class="nav-item">
 				<a class="nav-link" href="{% url "contacts" %}">Контакты</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="{% url "about" %}">Что-то?</a>
+				<a class="nav-link" href="{% url "about" %}">Помощь</a>
 			</li>
 
 {% comment %}          <li class="nav-item dropdown">

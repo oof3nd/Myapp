@@ -1,4 +1,12 @@
 {% extends "Test/base.html" %}
 {% block head_title %}Главная{% endblock head_title %}
-{% block content %}<p class="lead">Тестовый Блог</p>{% endblock content %}
+{% block content %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <p class="lead"> <strong>Вас приветствует, </strong></p>
+        <p class="lead">Открытая онлайн-система обучающего тестирования TESTICH!</p>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+{% endblock content %}
 
